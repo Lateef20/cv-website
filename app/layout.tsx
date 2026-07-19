@@ -7,11 +7,9 @@ import FooterWrapper from "@/components/FooterWrapper";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Lateef Jawando | Security Engineer",
-  description: "Personal portfolio of Lateef Jawando, Computer Science graduate, incoming MongoDB Security Engineer, and former JPMorgan Software Engineer Intern.",
+  title: "Lateef Jawando",
   openGraph: {
-    title: "Lateef Jawando | Security Engineer",
-    description: "Personal portfolio of Lateef Jawando, Computer Science graduate, incoming MongoDB Security Engineer, and former JPMorgan Software Engineer Intern.",
+    title: "Lateef Jawando",
     type: "website",
     url: "https://lateefjawando.com",
     images: [{ url: "https://lateefjawando.com/images/lateef-profile.jpg" }]
