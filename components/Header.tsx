@@ -49,6 +49,14 @@ export default function Header() {
                 </a>
               </li>
             ))}
+            <li>
+              <Link
+                href="/books"
+                style={{ color: "transparent", fontSize: "0.875rem" }}
+              >
+                Books
+              </Link>
+            </li>
           </ul>
         </nav>
       </div>
@@ -67,6 +75,16 @@ export default function Header() {
                 </a>
               </li>
             ))}
+            <li>
+              <Link
+                href="/books"
+                style={{ color: "transparent", fontSize: "0.875rem" }}
+                className="block py-2"
+                onClick={() => setMenuOpen(false)}
+              >
+                Books
+              </Link>
+            </li>
           </ul>
         </nav>
       )}
