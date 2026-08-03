@@ -15,7 +15,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="border-b border-gray-200 sticky top-0 bg-white z-10">
+    <header className="shadow-sm sticky top-0 bg-white/95 backdrop-blur-sm z-10 border-b border-gray-100">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
         <Link href="/" className="font-semibold text-gray-900 hover:text-blue-600 transition-colors">
           Lateef Jawando

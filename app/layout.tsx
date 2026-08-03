@@ -12,7 +12,6 @@ export const metadata: Metadata = {
     title: "Lateef Jawando",
     type: "website",
     url: "https://lateefjawando.com",
-    images: [{ url: "https://lateefjawando.com/images/lateef-profile.jpg" }]
   }
 };
 
