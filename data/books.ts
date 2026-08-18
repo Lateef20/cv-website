@@ -2,7 +2,7 @@ export const books = [
   {
     title: "1984",
     author: "George Orwell",
-    note: "Classic dystopian. The world stays with you long after you finish reading.",
+    note: "Classic dystopian.",
   },
   {
     title: "That Peckham Boy",
@@ -38,6 +38,16 @@ export const books = [
     title: "Antifragile",
     author: "Nassim Nicholas Taleb",
     note: "Philosophy, Maths, Stoicism, and History somehow rolled into one. Challenged assumptions I held and reframed how I think about uncertainty.",
+  },
+  {
+    title: "The Trading Game: A Confession",
+    author: "Gary Stevenson",
+    note: "Hilarious and insightful. Listened to the audiobook voiced by the author himself, which made me enjoy it way more than I would have if I read it. ",
+  },
+  {
+    title: "The Metamorphosis",
+    author: "Franz Kafka",
+    note: "Very funny concept but surprisingly sad.",
   },
 ];
 

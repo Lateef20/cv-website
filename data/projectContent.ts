@@ -19,14 +19,13 @@ export const projectContent: Record<string, string> = {
   "rms-plus": `
     <h2>What it does</h2>
     <p>RMS Technical Training runs a learning community on Skool, and the brief was to build something that would improve the experience for their students. We built RMS+ a co-pilot that sits alongside the existing platform rather than replacing it.</p>
-    <p>The core features are a conversational AI content creator powered by ElevenLabs (so instructors can generate material through voice), tools for producing short-form video recaps from longer content, and an AI interactive circuit simulator aimed at the hardware learners on the platform. That last one was probably the most fun to build.</p>
-
+    <p>The core features are: a conversational AI that lets students speak with course instructors, using ElevenLabs to recreate the instructor's own voice; auto-generated quizzes built from each lesson's transcript using Gemini; a dashboard so instructors can see all students' results; and a tool that produces short-form video recaps from longer lesson content.</p>
     <h2>Result</h2>
     <p>We won two prizes at KentHackIt: drones from the main track and earbuds from the MLH ElevenLabs track. Building for a real business with real users sharpens your decisions in a way that open-ended hackathon briefs do not.</p>
 
     <h2>Links</h2>
     <ul>
-      <li><a href="https://drive.google.com/file/d/1tZ42RRK_fKmg6ShGgmq_dVpONGzo3fTo" target="_blank" rel="noopener noreferrer">Live demo</a></li>
+      <li><a href="https://drive.google.com/file/d/1tZ42RRK_fKmg6ShGgmq_dVpONGzo3fTo" target="_blank" rel="noopener noreferrer">emo</a></li>
     </ul>
   `,
   "basketball-ai-analytics": `
@@ -42,12 +41,20 @@ export const projectContent: Record<string, string> = {
     <h2>The speed estimation experiment</h2>
     <p>I implemented player speed estimation using bounding box height as a proxy for real-world scale, converting pixel displacement between frames into kilometres per hour. Testing exposed the flaw: a single calibration from the first detected player produced wildly inaccurate estimates for players at different depths, due to perspective effects. Rather than treating this as a failure, I documented the causes and specified what a proper solution would require: a homography mapping image coordinates onto real court coordinates. That analysis shaped the future work section of our group report.</p>
 
-    <h2>Shot and dribble detection</h2>
-    <p>Shot detection uses a heuristic approach: when the ball trajectory shows an upward arc followed by a downward arc near the rim region, it is flagged as a shot attempt. Dribble counting uses the ball's vertical position over time; a dribble produces a characteristic bounce signature detectable with peak-finding on the y-coordinate time series, which is what enables double dribble detection.</p>
+    <h2>Backend infrastructure and reliability</h2>
+    <p>The original upload implementation risked loading large video files entirely into memory, which could destabilise the server under load. I refactored this with chunked upload streaming and added a file size limit, moving the system closer to something that could be deployed. I also implemented Cloudflare R2 storage with a time to live for access to uploaded videos and a local disk fallback so the application could fail gracefully when cloud credentials weren't configured, while still supporting a more production-ready architecture when they were configured.</p>
 
     <h2>Evaluation</h2>
     <p>The project achieved its core goal, but the system remains closer to a strong prototype than a complete officiating and coaching tool. Accurate per-player statistics would need more robust tracking through court calibration and validation across camera angles. Several features are still missing: reliable speed estimation, interception tracking, rebound detection, assists, and possession changes.</p>
     <p>The non-technical lessons were just as valuable: define a narrow initial scope with ambitious features as explicit stretch goals; don't invest in deployment configuration before the core system is stable and make passing tests a merge requirement rather than an afterthought.</p>
+
+    
+    <h2>Architecture</h2>
+
+    <figure style="margin:1.5rem 0;">
+      <img src="/images/travel detection ARCHITECTURE 1.png" alt="Sequence diagram" style="width:100%;border-radius:6px;border:1px solid #e5e7eb;" />
+      <figcaption style="font-size:0.78rem;color:#6b7280;margin-top:0.4rem;text-align:center;">Sequence diagram</figcaption>
+    </figure>
 
     <h2>Links</h2>
     <ul>
@@ -59,11 +66,9 @@ export const projectContent: Record<string, string> = {
   "iot-driving-tracker": `
     <h2>What it does</h2>
     <p>You put the device in the car, power it on with a USB power bank, and it handles everything else. When the vehicle starts moving, the GPS and accelerometer detect it and trip recording begins automatically. Location, speed, altitude, and acceleration are logged continuously. When the car stops, the trip is finalised and saved. The next time the device is near a known Wi-Fi network, it uploads the completed trip to a server where you can review your routes and driving behaviour through a web dashboard.</p>
-    <p>The whole thing runs on around £15 of commodity hardware. Commercial OBD-II trackers do something similar for £50 to £200 and lock your data into proprietary platforms.</p>
 
     <h2>Hardware</h2>
-    <p>Four components: an ESP32 as the central controller, a NEO-6M GPS module communicating over UART for location and speed, a LIS3DH accelerometer over I2C for movement detection, and a microSD card module for local storage. The ESP32 coordinates all of them and handles the Wi-Fi connection for uploads.</p>
-    <p>Power comes from a USB power bank rather than the car's 12V supply, which would need a separate regulator. It is simple and it works.</p>
+    <p>Four components: an ESP32 as the controller, a NEO-6M GPS module communicating over UART for location and speed, a LIS3DH accelerometer over I2C for movement detection, and a microSD card module for local storage. The ESP32 coordinates all of them and handles the Wi-Fi connection for uploads. The whole thing runs on around £15 of hardware. Power comes from a USB power bank rather than the car's 12V supply, which would need a separate regulator (12v to 5 or 3.3v).</p>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;">
       <figure style="margin:0;">
@@ -77,10 +82,10 @@ export const projectContent: Record<string, string> = {
     </div>
 
     <h2>Trip detection</h2>
-    <p>Journey detection runs on a finite state machine with states for idle, moving candidate, trip active, stopped candidate, trip ended, uploading, and sleeping. The state machine approach prevents false recordings from brief movement or GPS drift. A trip starts when GPS speed exceeds a configurable threshold, or sustained accelerometer movement is detected, and that condition must hold for a confirmation window before the system commits to an active trip. Trip end works the same way in reverse.</p>
+    <p>Journey detection runs on a finite state machine with states for idle, moving candidate, trip active, stopped candidate, trip ended, uploading, and sleeping. This approach prevents false recordings from brief movement or GPS drift. A trip starts when GPS speed exceeds a configurable threshold, or sustained accelerometer movement is detected, and that condition must hold for a confirmation window before the system commits to an active trip.</p>
 
     <h2>Logging and upload</h2>
-    <p>During an active trip, telemetry is written to the SD card periodically in CSV format: timestamp, latitude, longitude, GPS speed, altitude, satellite count, and accelerometer G reading. Local storage means no data is lost if the network is unavailable. When a trip ends and the device is near a configured home zone, it connects to Wi-Fi over HTTP and uploads the file. Trips stay on the card if the upload fails and retry on the next connection. Remote configuration is also pulled from the server, so operational parameters can be changed without reflashing the firmware.</p>
+    <p>During an active trip, telemetry is written to the SD card periodically in CSV format: timestamp, latitude, longitude, GPS speed, altitude, satellite count, and accelerometer G reading. Local storage means no data is lost if the network is unavailable. When a trip ends and the device is near a configured  geofence, it connects to Wi-Fi over HTTP and uploads the file. Trips stay on the card if the upload fails and retry on the next connection. The configurations are also pulled from the server, so parameters can be changed without having to reflashing the ESP32.</p>
 
     <figure style="margin:1.5rem 0;">
       <img src="/images/Ardunio IDE System Logs.png" alt="Arduino IDE Serial Monitor showing live system logs: GPS OK, LIS3DH OK, SD OK, Wi-Fi connected, state machine transitions" style="width:100%;border-radius:6px;border:1px solid #e5e7eb;" />
@@ -88,7 +93,15 @@ export const projectContent: Record<string, string> = {
     </figure>
 
     <h2>Power and reliability</h2>
-    <p>When no trip is active the device enters deep sleep to conserve battery. Wi-Fi is only enabled during uploads. The hardware connections for accelerometer interrupt-based wakeup and GPS power mode switching are in place as future work. A fault LED alerts to problems that would otherwise be invisible: GPS fix failures, SD card errors, and failed uploads, without needing serial debug access.</p>
+    <p>Energy Optimisation and power saving capabilities are among the key pillars of IOT device design. A CO2 sensor or smart doorbell would be far less useful if its batteries needed replacing daily. To address this, the device enters deep sleep when no trip is active to conserve battery, and Wi-Fi is only enabled during uploads because as wireless communcation method go Wi-Fi is high power consumption. Further power saving measures (currently the accelerometer moudle is alawys on changing this to sleep with interrupt-based wakeup when movement is detected would save power, and GPS power mode switching) are planned as future work. I also added a fault LED that alerts to problems which would otherwise be invisible: GPS fix failures, SD card errors, and failed uploads, without needing serial debug access.The case features a button to manually trigger an SD card upload in case the automatic upload fails, and a hole for the LED light.</p>
+
+    <figure style="margin:1.5rem 0;">
+      <img src="/images/low-power-wireless.jpg" alt="Comparison chart of power consumption across wireless communication technologies including Wi-Fi, Bluetooth, Zigbee, LoRa, and others" style="width:100%;border-radius:6px;border:1px solid #e5e7eb;" />
+      <figcaption style="font-size:0.78rem;color:#6b7280;margin-top:0.4rem;text-align:center;">
+        Power consumption comparison of wireless communication technologies.
+        <a href="https://promwad.com/sites/default/files/low-power-wireless-main.jpg" target="_blank" rel="noopener noreferrer" style="margin-left:0.3rem;">Source: Promwad</a>
+      </figcaption>
+    </figure>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;">
       <figure style="margin:0;">

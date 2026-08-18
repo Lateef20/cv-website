@@ -3,7 +3,7 @@ import { books } from "@/data/books";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "My 5 Star Books",
+  title: "Books i like",
   robots: { index: false, follow: false },
 };
 
@@ -18,9 +18,6 @@ export default function BooksPage() {
       </Link>
 
       <div className="mb-12">
-        <h1 className="text-3xl font-bold text-gray-900 mb-3">
-          My 5 Star Books
-        </h1>
         <p className="text-gray-500 leading-relaxed max-w-xl">
           You weren&apos;t supposed to find this... but now that you are, here are some books that I really like.
         </p>

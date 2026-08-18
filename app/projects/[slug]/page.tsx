@@ -13,7 +13,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   if (!project) notFound();
 
   const content = projectContent[slug];
-  const projectWithExtras = project as typeof project & { image?: string; demo?: string };
+  const projectWithExtras = project as typeof project & { image?: string; demo?: string; videoEmbed?: string };
 
   return (
     <div className="py-12">
@@ -42,7 +42,18 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         )}
       </div>
 
-      {projectWithExtras.image && (
+      {projectWithExtras.videoEmbed ? (
+        <div className="mb-8">
+          <div style={{ position: "relative", paddingBottom: "56.25%", height: 0, overflow: "hidden", borderRadius: "6px", border: "1px solid #e5e7eb" }}>
+            <iframe
+              src={projectWithExtras.videoEmbed}
+              allow="autoplay"
+              style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }}
+              title={`${project.title} demo`}
+            />
+          </div>
+        </div>
+      ) : projectWithExtras.image ? (
         <div className="mb-8">
           <img
             src={projectWithExtras.image}
@@ -50,7 +61,7 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
             className="w-full rounded border border-gray-200"
           />
         </div>
-      )}
+      ) : null}
 
       <div className="border-t border-gray-200 pt-8 prose-content">
         {content ? (

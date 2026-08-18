@@ -39,6 +39,7 @@ export const projects = [
     achievement: "Won drones (main track) and earbuds (MLH ElevenLabs track) at KentHackIt.",
     github: "",
     demo: "https://drive.google.com/file/d/1tZ42RRK_fKmg6ShGgmq_dVpONGzo3fTo",
+    videoEmbed: "https://drive.google.com/file/d/1tZ42RRK_fKmg6ShGgmq_dVpONGzo3fTo/preview",
     image: "/images/rms.png"
   }
 ];
