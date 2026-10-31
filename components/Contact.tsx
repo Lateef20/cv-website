@@ -2,7 +2,7 @@ import SectionHeading from "./SectionHeading";
 
 const EMAIL = "hello@lateefjawando.com";
 const LINKEDIN = "https://www.linkedin.com/in/lateef-jawando";
-const GITHUB = "https://github.com/lateef-jawando";
+const GITHUB = "https://github.com/lateef20";
 
 export default function Contact() {
   return (
